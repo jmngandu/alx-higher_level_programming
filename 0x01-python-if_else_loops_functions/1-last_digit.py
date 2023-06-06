@@ -10,4 +10,4 @@ if digit > 5:
 elif digit == 0:
     print("0")
 else:
-    print("less than 6 and not 0"
+    print("less than 6 and not 0")
