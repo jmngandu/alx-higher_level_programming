@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 # 7-update_dictionary.py
 
