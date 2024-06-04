@@ -1,48 +1,98 @@
 #!/usr/bin/python3
-"""Square class based on Rectangle"""
-
-import json
+# square.py
+"""Defines the square class
+"""
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """Defining Square class"""
+    """Class Square inherits from Rectangle
+    Args:
+        size, x=0, y=0, id=None
+    Raisses:
+    """
+
     def __init__(self, size, x=0, y=0, id=None):
-        """Instanitating an object
-        Attrs:
-            size (int) -> size of the square
-            x (int)    -> x-axis offset
-            y (int)    -> y-axis offset
-            id(int)    -> Unique identifier
+        """Intiates the square object
         """
+
         super().__init__(size, size, x, y, id)
 
     def __str__(self):
-        """str() representation of an object"""
-        return ("[Square] ({}) {}/{} - {}".format(self.id,
-                self.x, self.y, self.width))
+        """string representation of the square object
+        """
+
+        return "[Square] ({}) {}/{} - {}".format(self.id,
+                                                 self._Rectangle__x,
+                                                 self._Rectangle__y,
+                                                 self._Rectangle__width)
 
     @property
     def size(self):
-        """Getter for size"""
-        return self.size
+        """returns the size of the object
+        """
+
+        return self._Rectangle__width
 
     @size.setter
-    def size(self, val):
-        """Setter for size"""
-        self.width = val
-        self.height = val
+    def size(self, size):
+        """sets the new width and height
+        """
+
+        self.width = size
+        self.height = size
 
     def update(self, *args, **kwargs):
-        """Update an instance's attributes"""
-        if args is not None and len(args) is not 0:
-            attributes = ['__id', '__width', '__height', '__x', '__y']
-            for i in range(len(args)):
-                setattr(self, attributes[i], args[i])
+        """Update the Rectangle.
+        Args:
+            *args (ints): New attribute values.
+                - 1st argument represents id attribute
+                - 2nd argument represents size attribute
+                - 3rd argument represents x attribute
+                - 4th argument represents y attribute
+            **kwargs (dict): New key/value pairs of attributes.
+        """
+
+        new_args = [self.id,
+                    self._Rectangle__width,
+                    self._Rectangle__x, self._Rectangle__y]
+        if len(args) == 0 or args is None:
+            if len(kwargs) == 0:
+                return
+            else:
+                try:
+                    new_args[0] = kwargs['id']
+                except KeyError:
+                    pass
+                try:
+                    new_args[1] = kwargs['size']
+                except KeyError:
+                    pass
+                try:
+                    new_args[2] = kwargs['x']
+                except KeyError:
+                    pass
+                try:
+                    new_args[3] = kwargs['y']
+                except KeyError:
+                    pass
         else:
-            for key, value in kwargs.items():
-                setattr(self, key, value)
+            for x in range(len(args)):
+                if x < len(new_args):
+                    new_args[x] = args[x]
+        self.__init__(new_args[1],
+                      new_args[2],
+                      new_args[3],
+                      new_args[0])
 
     def to_dictionary(self):
-        """Serialize an object of Square class"""
-        return json.dumps(self)
+        """Returns a dictionary representation of the the
+        object"""
+
+        obj_dic = {
+            "id": self.id,
+            "size": self.width,
+            "x": self.x,
+            "y": self.y
+        }
+        return obj_dic
